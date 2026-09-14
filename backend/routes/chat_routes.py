@@ -268,7 +268,7 @@ def chat():
                 "source": source,
                 "page": page,
                 "url": (
-                    "http://127.0.0.1:5000/api/source?"
+                    "/api/source?"
                     "file="
                     + quote(str(source))
                     + "&page="

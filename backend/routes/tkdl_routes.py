@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from urllib.parse import quote
 
 from backend.rag.hybrid_search import hybrid_search
 from backend.rag.reranker import rerank_documents
@@ -199,11 +200,11 @@ This is informational guidance, not legal advice.
                 "title": source,
                 "page": page,
                 "url": (
-                    "http://127.0.0.1:5000/api/source"
+                    "/api/source"
                     "?file="
-                    + source.replace("\\", "/")
+                    + quote(source.replace("\\", "/"))
                     + "&page="
-                    + str(page)
+                    + quote(str(page))
                 )
             })
 
