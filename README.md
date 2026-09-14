@@ -169,3 +169,26 @@ All responses right now come from `frontend/js/api.js` in **mock mode** (`MOCK_M
 ## Next phase
 
 **Phase 2** will build the Flask backend (`backend/app.py`, `/api/health`, `/api/chat`, `/api/sources`) and connect it to this frontend by flipping `MOCK_MODE` to `false` in `api.js`.
+
+
+
+---
+title: IP-SAKTI Embedding Service
+emoji: 🧠
+colorFrom: blue
+colorTo: purple
+sdk: gradio
+sdk_version: 6.0.0
+app_file: app.py
+python_version: 3.12
+---
+
+# IP-SAKTI Embedding Service
+
+Embedding service for IP-SAKTI Sahayak.
+
+Model:
+
+`sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2`
+
+Embedding dimension: 384
