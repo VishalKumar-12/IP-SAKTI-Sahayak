@@ -15,5 +15,6 @@ langchain-pinecone==0.2.13
 pypdf==6.18.1
 sentence-transformers==6.0.1
 pinecone==7.3.0
+rank-bm25
 
 gunicorn==23.0.0
