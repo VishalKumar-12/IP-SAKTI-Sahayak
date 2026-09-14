@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — IP-SAKTI Sahayak</title>
+<meta name="description" content="Learn how IP-SAKTI Sahayak works, why source-grounded answers matter, and the safety principles behind it.">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site-header">
+  <nav class="navbar container" aria-label="Primary">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true">IP</span>
+      <span class="brand-text">
+        <span class="brand-primary">IP-SAKTI</span>
+        <span class="brand-secondary">Sahayak</span>
+      </span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="chat.html">AI Assistant</a></li>
+      <li><a href="abs.html">ABS Helper</a></li>
+      <li><a href="tkdl.html">TKDL</a></li>
+      <li><a href="sources.html">Sources</a></li>
+      <li><a href="about.html" aria-current="page">About</a></li>
+    </ul>
+    <div class="nav-tools" id="navTools">
+      <div class="selector">
+        <label class="visually-hidden" for="langSelect">Language</label>
+        <select id="langSelect" data-role="language-select">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+          <option value="ur">اردو</option>
+          <option value="bho">भोजपुरी</option>
+          <option value="mai">मैथिली</option>
+          <!-- <option value="mag">मगही</option> -->
+        </select>
+      </div>
+      <div class="selector">
+        <label class="visually-hidden" for="jurisSelect">Jurisdiction</label>
+        <select id="jurisSelect" data-role="jurisdiction-select">
+          <option value="india">India</option>
+          <option value="international">International</option>
+        </select>
+      </div>
+      <a href="chat.html" class="btn btn-primary btn-sm">Ask AI</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="container">
+      <span class="badge">About</span>
+      <h1 style="margin-top:14px;">Why IP-SAKTI Sahayak exists</h1>
+      <p>An overview of the problem, the technology, and the safety principles behind the assistant.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:20px;">
+    <div class="container" style="max-width:920px;">
+
+      <div class="about-block">
+        <div>
+          <div class="about-kicker">01</div>
+          <h2>What is IP-SAKTI?</h2>
+        </div>
+        <div class="about-body">
+          <p>IP-SAKTI Sahayak is an AI-powered assistant that helps Ayurveda practitioners, researchers, startups, students and innovators understand intellectual property and regulatory questions — patents, trademarks, copyright, geographical indications, biodiversity, Access and Benefit-Sharing, traditional knowledge, TKDL-related information, product classification, AYUSH regulations, and international IPR frameworks.</p>
+        </div>
+      </div>
+
+      <div class="about-block">
+        <div>
+          <div class="about-kicker">02</div>
+          <h2>Why this problem matters</h2>
+        </div>
+        <div class="about-body">
+          <p>Ayurveda innovation sits at the intersection of modern IPR law, traditional knowledge protection and biodiversity regulation. Many innovators struggle to find clear, trustworthy guidance across these overlapping frameworks — leading to missed protections, inadvertent non-compliance, or reliance on informal advice.</p>
+        </div>
+      </div>
+
+      <div class="about-block">
+        <div>
+          <div class="about-kicker">03</div>
+          <h2>How RAG works</h2>
+        </div>
+        <div class="about-body">
+          <p>IP-SAKTI uses Retrieval-Augmented Generation (RAG): rather than answering purely from a language model's internal memory, it first retrieves relevant passages from a curated knowledge base of acts, treaties and official documents, then generates an answer grounded strictly in that retrieved evidence.</p>
+          <ul>
+            <li>Documents are chunked and embedded with rich metadata (jurisdiction, category, section, page, year).</li>
+            <li>Hybrid retrieval combines semantic (vector) search with keyword search.</li>
+            <li>A reranking step surfaces only the most relevant evidence before generation.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="about-block">
+        <div>
+          <div class="about-kicker">04</div>
+          <h2>Why citations matter</h2>
+        </div>
+        <div class="about-body">
+          <p>Every meaningful legal or regulatory claim is paired with a citation to its source document, section and page. IP-SAKTI never invents sections, articles, laws, treaties, cases or citations — if a citation cannot be verified against the retrieved evidence, it is not shown as verified.</p>
+        </div>
+      </div>
+
+      <div class="about-block">
+        <div>
+          <div class="about-kicker">05</div>
+          <h2>How jurisdiction detection works</h2>
+        </div>
+        <div class="about-body">
+          <p>Questions are analyzed to determine the most relevant jurisdiction — India or International by default, with USA, UK, EU and Japan planned for the future. If authoritative information for a selected jurisdiction is not yet available in the knowledge base, IP-SAKTI says so directly rather than guessing.</p>
+        </div>
+      </div>
+
+      <div class="about-block">
+        <div>
+          <div class="about-kicker">06</div>
+          <h2>How the ABS Helper works</h2>
+        </div>
+        <div class="about-body">
+          <p>The ABS Helper analyzes a described biological resource, its type, intended purpose and jurisdiction to flag potential Access and Benefit-Sharing considerations under frameworks such as the Biological Diversity Act, the CBD and the Nagoya Protocol — presented as indicators for further review, not final legal determinations.</p>
+        </div>
+      </div>
+
+      <div class="about-block">
+        <div>
+          <div class="about-kicker">07</div>
+          <h2>How the TKDL Helper works</h2>
+        </div>
+        <div class="about-body">
+          <p>The TKDL Helper surfaces possible traditional-knowledge and prior-art indicators for a herb, formulation or treatment using authorized and publicly available information only. It never scrapes, exposes or reproduces restricted TKDL database contents, and directs users to official TKDL resources for authoritative searches.</p>
+        </div>
+      </div>
+
+      <div class="about-block" id="disclaimer">
+        <div>
+          <div class="about-kicker">08</div>
+          <h2>Safety and disclaimer</h2>
+        </div>
+        <div class="about-body">
+          <p>IP-SAKTI is built with guardrails that prevent it from fabricating legal facts. When the knowledge base lacks sufficient evidence, it abstains rather than guesses, and recommends professional verification. All output includes a confidence score and a clear disclaimer.</p>
+          <div class="disclaimer" style="margin-top:14px;">
+            <span aria-hidden="true">⚠️</span>
+            <span>This information is for general informational purposes only and is not a substitute for professional legal advice.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© 2026 IP-SAKTI Sahayak. Built for informational purposes only.</span>
+      <span>Not a substitute for professional legal advice.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/language.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/app.js"></script>
+</body>
+</html>

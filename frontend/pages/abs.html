@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABS Helper — IP-SAKTI Sahayak</title>
+<meta name="description" content="Identify potential Access and Benefit-Sharing considerations for biological resources and traditional knowledge.">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site-header">
+  <nav class="navbar container" aria-label="Primary">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true">IP</span>
+      <span class="brand-text">
+        <span class="brand-primary">IP-SAKTI</span>
+        <span class="brand-secondary">Sahayak</span>
+      </span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="chat.html">AI Assistant</a></li>
+      <li><a href="abs.html" aria-current="page">ABS Helper</a></li>
+      <li><a href="tkdl.html">TKDL</a></li>
+      <li><a href="sources.html">Sources</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-tools" id="navTools">
+      <div class="selector">
+        <label class="visually-hidden" for="langSelect">Language</label>
+        <select id="langSelect" data-role="language-select">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+          <option value="ur">اردو</option>
+          <option value="bho">भोजपुरी</option>
+          <option value="mai">मैथिली</option>
+          <option value="mag">मगही</option>
+        </select>
+      </div>
+      <div class="selector">
+        <label class="visually-hidden" for="jurisSelect">Jurisdiction</label>
+        <select id="jurisSelect" data-role="jurisdiction-select">
+          <option value="india">India</option>
+          <option value="international">International</option>
+        </select>
+      </div>
+      <a href="chat.html" class="btn btn-primary btn-sm">Ask AI</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="container">
+      <span class="badge">🌿 ABS Helper</span>
+      <h1 style="margin-top:14px;">Access and Benefit-Sharing Helper</h1>
+      <p>Identify potential Access and Benefit-Sharing considerations related to biological resources and traditional knowledge.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:48px;">
+    <div class="container" style="display:grid; grid-template-columns: 1fr 1fr; gap:32px; align-items:start;">
+
+      <!-- ============ FORM ============ -->
+      <form class="panel" id="absForm">
+        <div class="field">
+          <label for="bioResource">Biological Resource</label>
+          <input type="text" id="bioResource" class="input" placeholder="e.g. Ashwagandha root extract" required>
+        </div>
+
+        <div class="field">
+          <label for="resourceType">Resource Type</label>
+          <div class="option-grid" role="radiogroup" aria-labelledby="resourceType">
+            <label class="option-pill"><input type="radio" name="resourceType" value="Plant" checked><span>Plant</span></label>
+            <label class="option-pill"><input type="radio" name="resourceType" value="Animal"><span>Animal</span></label>
+            <label class="option-pill"><input type="radio" name="resourceType" value="Microorganism"><span>Microorganism</span></label>
+            <label class="option-pill"><input type="radio" name="resourceType" value="Traditional Knowledge"><span>Traditional Knowledge</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="purpose">Purpose</label>
+          <div class="option-grid" role="radiogroup" aria-labelledby="purpose">
+            <label class="option-pill"><input type="radio" name="purpose" value="Research" checked><span>Research</span></label>
+            <label class="option-pill"><input type="radio" name="purpose" value="Commercial"><span>Commercial</span></label>
+            <label class="option-pill"><input type="radio" name="purpose" value="Product Development"><span>Product Development</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="absJurisdiction">Jurisdiction</label>
+          <select id="absJurisdiction" class="select">
+            <option value="India">India</option>
+            <option value="International">International</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" id="absSubmit">Analyze ABS Considerations</button>
+      </form>
+
+      <!-- ============ RESULT ============ -->
+      <div id="absResultArea">
+        <div class="state-box">
+          <div class="state-icon">🌿</div>
+          <h4>No analysis yet</h4>
+          <p>Fill in the form and select “Analyze ABS Considerations” to see potential ABS considerations.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<!-- ============ RESULT TEMPLATE ============ -->
+<template id="absResultTemplate">
+  <div class="result-card">
+    <div class="result-section">
+      <h4 class="eyebrow-primary">Potential ABS Consideration Detected</h4>
+      <p class="result-lead" data-field="summary"></p>
+    </div>
+    <div class="result-section">
+      <h4>Details</h4>
+      <div class="result-meta-row">
+        <span class="tag" data-field="resource"></span>
+        <span class="tag tag-accent" data-field="access"></span>
+        <span class="tag" data-field="benefitSharing"></span>
+        <span class="tag tag-accent" data-field="traditionalKnowledge"></span>
+      </div>
+      <p style="margin-top:14px; font-size:0.9rem;"><strong>Relevant Framework:</strong> <span data-field="framework"></span></p>
+    </div>
+    <div class="result-section">
+      <h4>Sources</h4>
+      <div data-field="sources"></div>
+    </div>
+    <div class="result-section">
+      <h4>Confidence</h4>
+      <div class="confidence-block">
+        <div class="confidence-top">
+          <span class="confidence-value" data-field="confidenceValue">—</span>
+          <span class="confidence-level" data-field="confidenceLevel">—</span>
+        </div>
+        <div class="confidence-bar" data-field="confidenceBar"><span style="width:0%;"></span></div>
+      </div>
+    </div>
+    <div class="result-section">
+      <div class="disclaimer">
+        <span aria-hidden="true">⚠️</span>
+        <span>This is general informational guidance only, not a substitute for professional legal or regulatory advice.</span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script src="../js/language.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/abs.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/app.js"></script>
+</body>
+</html>

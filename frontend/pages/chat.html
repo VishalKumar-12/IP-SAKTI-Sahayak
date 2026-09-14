@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Assistant — IP-SAKTI Sahayak</title>
+<meta name="description" content="Ask IP-SAKTI Sahayak about Ayurveda patents, trademarks, biodiversity, traditional knowledge and regulatory frameworks.">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/chat.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+<a href="#chatMain" class="skip-link">Skip to chat</a>
+
+<!-- ============ NAVBAR ============ -->
+<header class="site-header">
+  <nav class="navbar container" aria-label="Primary">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true">IP</span>
+      <span class="brand-text">
+        <span class="brand-primary">IP-SAKTI</span>
+        <span class="brand-secondary">Sahayak</span>
+      </span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="chat.html" aria-current="page">AI Assistant</a></li>
+      <li><a href="abs.html">ABS Helper</a></li>
+      <li><a href="tkdl.html">TKDL</a></li>
+      <li><a href="sources.html">Sources</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-tools" id="navTools">
+      <div class="selector">
+        <label class="visually-hidden" for="langSelect">Language</label>
+        <select id="langSelect" data-role="language-select">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+          <option value="ur">اردو</option>
+          <option value="bho">भोजपुरी</option>
+          <option value="mai">मैथिली</option>
+          <option value="mag">मगही</option>
+        </select>
+      </div>
+      <div class="selector">
+        <label class="visually-hidden" for="jurisSelect">Jurisdiction</label>
+        <select id="jurisSelect" data-role="jurisdiction-select">
+          <option value="india">India</option>
+          <option value="international">International</option>
+          <option value="usa">USA (coming soon)</option>
+          <option value="uk">UK (coming soon)</option>
+          <option value="eu">EU (coming soon)</option>
+          <option value="japan">Japan (coming soon)</option>
+        </select>
+      </div>
+      <a href="chat.html" class="btn btn-primary btn-sm">Ask AI</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<main id="chatMain" class="chat-shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="chat-sidebar" id="chatSidebar" aria-label="Chat navigation">
+    <div class="sidebar-title">IP-SAKTI Sahayak</div>
+    <button class="btn btn-outline new-chat-btn" id="newChatBtn">+ New Chat</button>
+
+    <div class="sidebar-label">Quick Actions</div>
+    <div class="quick-actions" id="quickActions">
+      <button class="quick-action" data-topic="patent"><span class="qa-icon">📜</span> Patent</button>
+      <button class="quick-action" data-topic="trademark"><span class="qa-icon">™️</span> Trademark</button>
+      <button class="quick-action" data-topic="biodiversity"><span class="qa-icon">🌿</span> Biodiversity</button>
+      <button class="quick-action" data-topic="abs"><span class="qa-icon">🤝</span> ABS</button>
+      <button class="quick-action" data-topic="tkdl"><span class="qa-icon">📚</span> TKDL</button>
+      <button class="quick-action" data-topic="regulatory"><span class="qa-icon">🧪</span> Regulatory</button>
+      <button class="quick-action" data-topic="international"><span class="qa-icon">🌐</span> International</button>
+    </div>
+
+    <div class="sidebar-label">Recent Conversations</div>
+    <div class="recent-list" id="recentList">
+      <p class="recent-empty" id="recentEmpty" style="font-size:0.82rem; color:var(--color-text-faint); padding:4px 6px;">Loading...</p>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN CHAT ============ -->
+  <section class="chat-main">
+    <div class="chat-header">
+      <button class="chat-sidebar-toggle btn btn-outline btn-sm" id="sidebarToggle" aria-expanded="false" aria-controls="chatSidebar">☰ Menu</button>
+      <h1>IP-SAKTI AI Assistant</h1>
+      <div class="chat-controls">
+        <div class="control-group">
+          <label for="chatLang">Language:</label>
+          <select id="chatLang" class="select" data-role="language-select" style="padding:6px 26px 6px 10px;">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी</option>
+            <option value="ur">اردو</option>
+            <option value="bho">भोजपुरी</option>
+            <option value="mai">मैथिली</option>
+            <option value="mag">मगही</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="chatJuris">Jurisdiction:</label>
+          <select id="chatJuris" class="select" data-role="jurisdiction-select" style="padding:6px 26px 6px 10px;">
+            <option value="india">India</option>
+            <option value="international">International</option>
+            <option value="usa">USA</option>
+            <option value="uk">UK</option>
+            <option value="eu">EU</option>
+            <option value="japan">Japan</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-messages" id="chatMessages" aria-live="polite">
+
+      <!-- Assistant welcome -->
+      <div class="msg-row assistant">
+        <div class="msg-avatar" aria-hidden="true">🌿</div>
+        <div class="msg-bubble">
+          <p style="margin:0;">Namaste! I'm IP-SAKTI Sahayak. Ask me about patents, trademarks, biodiversity, traditional knowledge, ABS, TKDL, product classification or international IPR frameworks for Ayurveda.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="chat-composer">
+      <form id="chatForm">
+        <div class="composer-box">
+          <textarea id="chatInput" rows="1" placeholder="Ask about Ayurveda IPR..." aria-label="Ask about Ayurveda IPR"></textarea>
+          <div class="composer-actions">
+            <button type="button" class="icon-btn" id="micBtn" aria-label="Use microphone" aria-pressed="false">🎤</button>
+            <button type="button" class="icon-btn" id="attachBtn" aria-label="Attach file">📎</button>
+            <button type="submit" class="send-btn" id="sendBtn" aria-label="Send message">➤</button>
+          </div>
+        </div>
+      </form>
+      <p class="composer-note">IP-SAKTI provides general legal information only and is not a substitute for professional legal advice.</p>
+    </div>
+  </section>
+</main>
+
+<!-- ============ ANSWER TEMPLATE (used by chat.js) ============ -->
+<template id="answerTemplate">
+  <div class="assistant-response">
+    <div class="result-card">
+      <div class="result-section">
+        <h4 class="eyebrow-primary">Answer</h4>
+        <p class="result-lead" data-field="answer"></p>
+      </div>
+      <div class="result-section">
+        <h4>Why This Matters</h4>
+        <p class="result-lead" data-field="whyMatters" style="font-size:0.92rem;"></p>
+      </div>
+      <div class="result-section">
+        <h4>Relevant Considerations</h4>
+        <ul class="about-body" data-field="considerations" style="margin:0; padding-left:18px; font-size:0.92rem; color:var(--color-text-muted);"></ul>
+      </div>
+      <div class="result-section">
+        <h4>Evidence &amp; Sources</h4>
+        <div data-field="sources"></div>
+      </div>
+      <div class="result-section">
+        <h4>Confidence</h4>
+        <div class="confidence-block">
+          <div class="confidence-top">
+            <span class="confidence-value" data-field="confidenceValue">—</span>
+            <span class="confidence-level" data-field="confidenceLevel">—</span>
+          </div>
+          <div class="confidence-bar" data-field="confidenceBar"><span style="width:0%;"></span></div>
+        </div>
+      </div>
+      <div class="result-section">
+        <div class="disclaimer">
+          <span aria-hidden="true">⚠️</span>
+          <span>Legal information only. Not a substitute for professional legal advice.</span>
+        </div>
+      </div>
+      <div class="result-actions">
+        <button class="btn btn-outline btn-sm" data-action="view-source">View Source</button>
+        <button class="btn btn-outline btn-sm" data-action="copy">Copy</button>
+        <button class="btn btn-outline btn-sm" data-action="helpful">👍 Helpful</button>
+        <button class="btn btn-outline btn-sm" data-action="not-helpful">👎 Not Helpful</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script src="../js/language.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/voice.js"></script>
+<script src="../js/chat.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knowledge Sources — IP-SAKTI Sahayak</title>
+<meta name="description" content="Browse the authoritative documents, acts and treaties that ground IP-SAKTI Sahayak's answers.">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site-header">
+  <nav class="navbar container" aria-label="Primary">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true">IP</span>
+      <span class="brand-text">
+        <span class="brand-primary">IP-SAKTI</span>
+        <span class="brand-secondary">Sahayak</span>
+      </span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="chat.html">AI Assistant</a></li>
+      <li><a href="abs.html">ABS Helper</a></li>
+      <li><a href="tkdl.html">TKDL</a></li>
+      <li><a href="sources.html" aria-current="page">Sources</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-tools" id="navTools">
+      <div class="selector">
+        <label class="visually-hidden" for="langSelect">Language</label>
+        <select id="langSelect" data-role="language-select">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+          <option value="ur">اردو</option>
+          <option value="bho">भोजपुरी</option>
+          <option value="mai">मैथिली</option>
+          <option value="mag">मगही</option>
+        </select>
+      </div>
+      <div class="selector">
+        <label class="visually-hidden" for="jurisSelect">Jurisdiction</label>
+        <select id="jurisSelect" data-role="jurisdiction-select">
+          <option value="india">India</option>
+          <option value="international">International</option>
+        </select>
+      </div>
+      <a href="chat.html" class="btn btn-primary btn-sm">Ask AI</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="container">
+      <span class="badge">📚 Knowledge Sources</span>
+      <h1 style="margin-top:14px;">Knowledge Sources</h1>
+      <p>Every answer IP-SAKTI gives is grounded in documents from this library — acts, treaties and official regulatory material.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:40px;">
+    <div class="container">
+
+      <div class="filter-bar">
+        <div class="search-field">
+          <input type="text" class="input" id="sourceSearch" placeholder="Search documents...">
+        </div>
+        <select class="select" id="filterCategory">
+          <option value="">All Categories</option>
+          <option value="Patent">Patent</option>
+          <option value="Trademark">Trademark</option>
+          <option value="Copyright">Copyright</option>
+          <option value="GI">Geographical Indication</option>
+          <option value="Biodiversity">Biodiversity</option>
+          <option value="AYUSH">AYUSH</option>
+          <option value="Traditional Knowledge">Traditional Knowledge</option>
+          <option value="International">International Treaty</option>
+        </select>
+        <select class="select" id="filterJurisdiction">
+          <option value="">All Jurisdictions</option>
+          <option value="India">India</option>
+          <option value="International">International</option>
+        </select>
+        <select class="select" id="filterType">
+          <option value="">All Document Types</option>
+          <option value="Act">Act</option>
+          <option value="Treaty">Treaty</option>
+          <option value="Guideline">Guideline</option>
+          <option value="Protocol">Protocol</option>
+        </select>
+      </div>
+
+      <div class="card-grid" id="sourceGrid">
+        <!-- populated by sources.js -->
+      </div>
+
+      <div id="sourceEmptyState" style="display:none; margin-top:24px;">
+        <div class="state-box">
+          <div class="state-icon">🔍</div>
+          <h4>No documents found</h4>
+          <p>Try adjusting your search or filters.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<!-- ============ SOURCE CARD TEMPLATE ============ -->
+<template id="sourceCardTemplate">
+  <div class="source-card">
+    <div class="card-top">
+      <h3 data-field="name"></h3>
+      <span class="source-official">✓ Official</span>
+    </div>
+    <div class="tag-row">
+      <span class="tag" data-field="jurisdiction"></span>
+      <span class="tag tag-accent" data-field="category"></span>
+    </div>
+    <div class="meta-row">
+      <span data-field="type"></span>
+      <span data-field="version"></span>
+    </div>
+    <a href="#" class="btn btn-outline btn-sm" data-field="link" target="_blank" rel="noopener">View Document</a>
+  </div>
+</template>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© 2026 IP-SAKTI Sahayak. Built for informational purposes only.</span>
+      <span>Not a substitute for professional legal advice.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/language.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/sources.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/app.js"></script>
+</body>
+</html>

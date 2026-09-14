@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IP-SAKTI Sahayak — AI-Powered Ayurveda IPR &amp; Regulatory Assistant</title>
+<meta name="description" content="An AI-powered, source-grounded assistant helping Ayurveda practitioners, researchers and innovators navigate patents, trademarks, biodiversity, traditional knowledge and regulatory frameworks.">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- ============ NAVBAR ============ -->
+<header class="site-header">
+  <nav class="navbar container" aria-label="Primary">
+    <a href="index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true">IP</span>
+      <span class="brand-text">
+        <span class="brand-primary">IP-SAKTI</span>
+        <span class="brand-secondary">Sahayak</span>
+      </span>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" aria-current="page">Home</a></li>
+      <li><a href="pages/chat.html">AI Assistant</a></li>
+      <li><a href="pages/abs.html">ABS Helper</a></li>
+      <li><a href="pages/tkdl.html">TKDL</a></li>
+      <li><a href="pages/sources.html">Sources</a></li>
+      <li><a href="pages/about.html">About</a></li>
+    </ul>
+
+    <div class="nav-tools" id="navTools">
+        <div class="selector">
+          <label class="visually-hidden" for="langSelect">Language</label>
+
+          <select id="langSelect" data-role="language-select">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी</option>
+            <option value="as">অসমীয়া</option>
+            <option value="bn">বাংলা</option>
+            <option value="gu">ગુજરાતી</option>
+            <option value="kn">ಕನ್ನಡ</option>
+            <option value="ks">कॉशुर / کٲشُر</option>
+            <option value="kok">कोंकणी</option>
+            <option value="mai">मैथिली</option>
+            <option value="ml">മലയാളം</option>
+            <option value="mr">मराठी</option>
+            <option value="ne">नेपाली</option>
+            <option value="or">ଓଡ଼ିଆ</option>
+            <option value="pa">ਪੰਜਾਬੀ</option>
+            <option value="sa">संस्कृतम्</option>
+            <option value="sd">سنڌي</option>
+            <option value="ta">தமிழ்</option>
+            <option value="te">తెలుగు</option>
+            <option value="ur">اردو</option>
+            <option value="bodo">बड़ो</option>
+            <option value="doi">डोगरी</option>
+            <option value="mni">মৈতৈলোন</option>
+            <option value="bho">भोजपुरी</option>
+            <option value="mag">मगही</option>
+          </select>
+        </div>
+      </div>
+      <div class="selector">
+        <label class="visually-hidden" for="jurisSelect">Jurisdiction</label>
+        <select id="jurisSelect" data-role="jurisdiction-select">
+          <option value="india">India</option>
+          <option value="international">International</option>
+          <option value="usa">USA (coming soon)</option>
+          <option value="uk">UK (coming soon)</option>
+          <option value="eu">EU (coming soon)</option>
+          <option value="japan">Japan (coming soon)</option>
+        </select>
+      </div>
+      <a href="pages/chat.html" class="btn btn-primary btn-sm">Ask AI</a>
+    </div>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="leaf-motif" aria-hidden="true"></div>
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="badge hero-badge"><span class="dot"></span> AI-Powered Ayurveda IPR &amp; Regulatory Assistant</span>
+        <h1>Navigate Ayurveda IPR with trusted, source-grounded AI</h1>
+        <p class="hero-desc">Understand patents, trademarks, biodiversity, traditional knowledge, regulatory requirements and international IP frameworks through an intelligent, evidence-backed assistant.</p>
+        <div class="hero-actions">
+          <a href="pages/chat.html" class="btn btn-primary">Ask IP-SAKTI</a>
+          <a href="#features" class="btn btn-outline">Explore Features</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="num">7+</div>
+            <div class="label">IPR &amp; regulatory domains covered</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num">India + Intl.</div>
+            <div class="label">Jurisdictions supported</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num">ALL</div>
+            <div class="label">Indian languages supported</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="workflow-card">
+          <div class="workflow-title">HOW YOUR QUESTION IS ANSWERED</div>
+          <div class="workflow-steps">
+            <div class="workflow-step">
+              <div class="step-icon">💬</div>
+              <div><strong>User Question</strong><span>Ask in your own words</span></div>
+            </div>
+            <div class="workflow-arrow" aria-hidden="true">↓</div>
+            <div class="workflow-step">
+              <div class="step-icon">🧠</div>
+              <div><strong>AI Analysis</strong><span>Intent &amp; jurisdiction detection</span></div>
+            </div>
+            <div class="workflow-arrow" aria-hidden="true">↓</div>
+            <div class="workflow-step">
+              <div class="step-icon">🔍</div>
+              <div><strong>RAG Search</strong><span>Hybrid retrieval + reranking</span></div>
+            </div>
+            <div class="workflow-arrow" aria-hidden="true">↓</div>
+            <div class="workflow-step">
+              <div class="step-icon">📜</div>
+              <div><strong>Authoritative Sources</strong><span>Acts, treaties &amp; official documents</span></div>
+            </div>
+            <div class="workflow-arrow" aria-hidden="true">↓</div>
+            <div class="workflow-step final">
+              <div class="step-icon">✅</div>
+              <div><strong>Answer + Citations</strong><span>With confidence &amp; disclaimer</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-head">
+        <h2>One assistant, every Ayurveda IPR question</h2>
+        <p>Purpose-built guidance across the domains that matter most to practitioners, researchers, startups and students.</p>
+      </div>
+      <div class="feature-grid">
+
+        <article class="feature-card">
+          <div class="feature-icon">📜</div>
+          <h3>Patent Guidance</h3>
+          <p>Understand novelty, inventive step and statutory considerations for Ayurvedic formulations and processes.</p>
+          <a href="pages/chat.html?topic=patent" class="feature-link">Learn more →</a>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">™️</div>
+          <h3>Trademark Guidance</h3>
+          <p>Explore brand, product-name and classification considerations under the Trade Marks Act.</p>
+          <a href="pages/chat.html?topic=trademark" class="feature-link">Learn more →</a>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">🌿</div>
+          <h3>Biodiversity &amp; ABS</h3>
+          <p>Identify Access and Benefit-Sharing obligations for biological resources and traditional knowledge.</p>
+          <a href="pages/abs.html" class="feature-link">Learn more →</a>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">📚</div>
+          <h3>Traditional Knowledge / TKDL</h3>
+          <p>Get prior-art indicators for traditional formulations while respecting TKDL access restrictions.</p>
+          <a href="pages/tkdl.html" class="feature-link">Learn more →</a>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">🧪</div>
+          <h3>Product Classification</h3>
+          <p>Understand whether a product may fall under Classical, Proprietary, New Drug or other AYUSH categories.</p>
+          <a href="pages/chat.html?topic=classification" class="feature-link">Learn more →</a>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">🌐</div>
+          <h3>International IPR</h3>
+          <p>Learn how TRIPS, CBD, Nagoya Protocol, PCT, Madrid Protocol and WIPO frameworks may apply.</p>
+          <a href="pages/chat.html?topic=international" class="feature-link">Learn more →</a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="section section-bg-alt">
+    <div class="container">
+      <div class="section-head">
+        <h2>How IP-SAKTI answers your question</h2>
+        <p>Every response follows the same transparent, evidence-first process.</p>
+      </div>
+      <div class="timeline">
+        <div class="timeline-step">
+          <div class="timeline-index">01</div>
+          <h4>Ask Question</h4>
+          <p>Type or speak your question in any supported language.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-index">02</div>
+          <h4>Understand Context</h4>
+          <p>Intent, product type and jurisdiction are detected automatically.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-index">03</div>
+          <h4>Search Authoritative Sources</h4>
+          <p>Hybrid semantic + keyword retrieval finds relevant evidence.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-index">04</div>
+          <h4>Generate Evidence-Based Answer</h4>
+          <p>The answer is grounded strictly in retrieved, verified evidence.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-index">05</div>
+          <h4>Show Citation + Confidence</h4>
+          <p>Every claim is linked to its source, with a transparent confidence score.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INDIA + INTERNATIONAL ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Grounded in India and international frameworks</h2>
+        <p>IP-SAKTI draws on statutory and treaty text — never on assumptions.</p>
+      </div>
+      <div class="jurisdiction-grid">
+        <div class="jurisdiction-card">
+          <h3><span class="jurisdiction-flag">🇮🇳</span> India</h3>
+          <ul>
+            <li>Patents Act, 1970</li>
+            <li>Trade Marks Act, 1999</li>
+            <li>Copyright Act, 1957</li>
+            <li>Geographical Indications of Goods (Registration &amp; Protection) Act, 1999</li>
+            <li>Biological Diversity Act, 2002</li>
+            <li>AYUSH regulatory documents</li>
+            <li>Traditional Knowledge resources</li>
+          </ul>
+        </div>
+        <div class="jurisdiction-card">
+          <h3><span class="jurisdiction-flag">🌐</span> International</h3>
+          <ul>
+            <li>TRIPS Agreement</li>
+            <li>Convention on Biological Diversity (CBD)</li>
+            <li>Nagoya Protocol</li>
+            <li>Patent Cooperation Treaty (PCT)</li>
+            <li>Madrid Protocol</li>
+            <li>WIPO Genetic Resources &amp; Traditional Knowledge (GRATK) Treaty</li>
+          </ul>
+        </div>
+      </div>
+      <div class="notice-strip">
+        <span aria-hidden="true">ℹ️</span>
+        <span>International treaties are not automatically domestic law of every country — implementation depends on each nation's own legislation.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-band">
+        <div>
+          <h2>Have an Ayurveda IPR question?</h2>
+          <p>Get a source-grounded, citation-backed answer in seconds.</p>
+        </div>
+        <a href="pages/chat.html" class="btn btn-accent">Ask IP-SAKTI Sahayak</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand-text" style="margin-bottom:12px;">
+          <span class="brand-primary" style="color:#fff;">IP-SAKTI Sahayak</span>
+        </div>
+        <p>AI-powered support for Ayurveda IPR and regulatory guidance.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <a href="index.html">Home</a>
+        <a href="pages/chat.html">AI Assistant</a>
+        <a href="pages/abs.html">ABS Helper</a>
+        <a href="pages/tkdl.html">TKDL</a>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <a href="pages/sources.html">Sources</a>
+        <a href="pages/about.html">About</a>
+        <a href="pages/about.html#disclaimer">Disclaimer</a>
+      </div>
+      <div class="footer-col">
+        <h5>Project</h5>
+        <p>Smart India Hackathon Initiative</p>
+        <a href="pages/about.html">Contact / Project Info</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 IP-SAKTI Sahayak. Built for informational purposes only.</span>
+      <span>Not a substitute for professional legal advice.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/language.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
