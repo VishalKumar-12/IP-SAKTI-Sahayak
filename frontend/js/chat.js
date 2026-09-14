@@ -146,6 +146,7 @@
                     'aria-label',
                     'Delete conversation'
                 );
+
                 del.textContent = '✕';
 
                 del.addEventListener('click', function (e) {
@@ -539,45 +540,63 @@
                     '.assistant-response'
                 );
 
-            root.querySelector(
-                '[data-field="answer"]'
-            ).innerHTML =
-                renderMarkdown(
-                    data.answer || ''
+            var answerEl =
+                root.querySelector(
+                    '[data-field="answer"]'
                 );
 
-            root.querySelector(
-                '[data-field="whyMatters"]'
-            ).innerHTML =
-                renderMarkdown(
-                    data.why_this_matters || ''
+            if (answerEl) {
+                answerEl.innerHTML =
+                    renderMarkdown(
+                        data.answer || ''
+                    );
+            }
+
+            var whyMattersEl =
+                root.querySelector(
+                    '[data-field="whyMatters"]'
                 );
+
+            if (whyMattersEl) {
+                whyMattersEl.innerHTML =
+                    renderMarkdown(
+                        data.why_this_matters || ''
+                    );
+            }
 
             var considerationsEl =
                 root.querySelector(
                     '[data-field="considerations"]'
                 );
 
-            (data.considerations || [])
-                .forEach(function (item) {
+            if (considerationsEl) {
 
-                    var li =
-                        document.createElement('li');
+                (data.considerations || [])
+                    .forEach(function (item) {
 
-                    li.textContent = item;
+                        var li =
+                            document.createElement('li');
 
-                    li.style.marginBottom =
-                        '6px';
+                        li.textContent = item;
 
-                    considerationsEl.appendChild(li);
-                });
+                        li.style.marginBottom =
+                            '6px';
 
-            renderSources(
+                        considerationsEl.appendChild(li);
+                    });
+            }
+
+            var sourcesEl =
                 root.querySelector(
                     '[data-field="sources"]'
-                ),
-                data.sources || []
-            );
+                );
+
+            if (sourcesEl) {
+                renderSources(
+                    sourcesEl,
+                    data.sources || []
+                );
+            }
 
             renderConfidence(
                 root,
@@ -633,6 +652,8 @@
         }
 
         function renderSources(container, sources) {
+
+            if (!container) return;
 
             container.innerHTML = '';
 
