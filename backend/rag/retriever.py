@@ -49,9 +49,6 @@ def retrieve_with_scores(
 
     for document, score in results:
 
-        if score < min_score:
-            continue
-
         content = " ".join(
             document.page_content.split()
         ).lower()
@@ -62,7 +59,7 @@ def retrieve_with_scores(
             seen.add(key)
 
             unique_results.append(
-                (document, score)
+                (document, float(score))
             )
 
     return unique_results

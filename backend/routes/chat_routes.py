@@ -87,6 +87,15 @@ def _save_assistant_message(
     )
 
 
+def _confidence_level(confidence):
+    if confidence >= 0.80:
+        return "High"
+    elif confidence >= 0.60:
+        return "Medium"
+    else:
+        return "Low"
+
+
 @chat_bp.route("/chat", methods=["POST"])
 @jwt_required()
 def chat():
@@ -97,6 +106,7 @@ def chat():
 
     message = data.get("message", "").strip()
     language = data.get("language", "en")
+    jurisdiction = data.get("jurisdiction", "india")
     conversation_id = data.get("conversation_id")
 
     if not message:
@@ -144,7 +154,8 @@ def chat():
             message,
             k=8,
             min_score=0.65,
-            classification=classification
+            classification=classification,
+            jurisdiction=jurisdiction
         )
 
         print(
@@ -172,11 +183,29 @@ def chat():
                 "success": True,
                 "conversation_id": conversation.id,
                 "answer": no_info_answer,
+                "sources": [],
                 "citations": [],
                 "confidence": 0.0,
+                "confidence_level": "Low",
+                "considerations": [
+                    check.replace("_", " ").title()
+                    for check, enabled in classification.get(
+                        "checks", {}
+                    ).items()
+                    if enabled
+                ],
+                "why_this_matters": (
+                    "The assistant avoids giving unsupported legal "
+                    "or regulatory guidance when sufficient "
+                    "authoritative evidence is unavailable."
+                ),
                 "classification": classification,
                 "classification_confidence": (
                     classification_confidence
+                ),
+                "jurisdiction": classification.get(
+                    "jurisdiction",
+                    "India"
                 ),
                 "language": language
             })
@@ -213,11 +242,26 @@ def chat():
                 "success": True,
                 "conversation_id": conversation.id,
                 "answer": no_info_answer,
+                "sources": [],
                 "citations": [],
                 "confidence": 0.0,
+                "confidence_level": "Low",
+                "considerations": [
+                    "The available sources did not provide sufficient "
+                    "evidence to answer this question reliably."
+                ],
+                "why_this_matters": (
+                    "The assistant avoids giving unsupported legal "
+                    "or regulatory guidance when sufficient "
+                    "authoritative evidence is unavailable."
+                ),
                 "classification": classification,
                 "classification_confidence": (
                     classification_confidence
+                ),
+                "jurisdiction": classification.get(
+                    "jurisdiction",
+                    "India"
                 ),
                 "language": language
             })
@@ -227,7 +271,8 @@ def chat():
             message,
             reranked_results,
             classification,
-            language
+            language,
+            jurisdiction
         )
 
         print(
@@ -303,11 +348,28 @@ def chat():
             "success": True,
             "conversation_id": conversation.id,
             "answer": answer,
+            "sources": citations,
             "citations": citations,
             "confidence": confidence,
+            "confidence_level": _confidence_level(confidence),
+            "considerations": [
+                check.replace("_", " ").title()
+                for check, enabled in classification.get(
+                    "checks", {}
+                ).items()
+                if enabled
+            ],
+            "why_this_matters": (
+                "This answer is based on the retrieved authoritative "
+                "sources relevant to your question."
+            ),
             "classification": classification,
             "classification_confidence": (
                 classification_confidence
+            ),
+            "jurisdiction": classification.get(
+                "jurisdiction",
+                "India"
             ),
             "language": language
         })

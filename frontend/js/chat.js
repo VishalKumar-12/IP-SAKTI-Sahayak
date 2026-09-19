@@ -510,7 +510,9 @@
         }
 
         function appendAssistantAnswer(data) {
-
+            console.log("CHAT RESPONSE:", data);
+            console.log("CONSIDERATIONS:", data.considerations);
+            
             var row =
                 document.createElement('div');
 

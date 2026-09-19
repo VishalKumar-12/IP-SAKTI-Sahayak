@@ -1,24 +1,20 @@
-import os
-from huggingface_hub import InferenceClient
+from sentence_transformers import CrossEncoder
 
 print("RERANKER MODULE LOADED")
 
 MODEL_NAME = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 
+_reranker = None
+
 
 def get_reranker():
 
-    hf_token = os.getenv("HF_TOKEN")
+    global _reranker
 
-    if not hf_token:
-        raise ValueError(
-            "HF_TOKEN is missing. Add HF_TOKEN to environment variables."
-        )
+    if _reranker is None:
+        _reranker = CrossEncoder(MODEL_NAME)
 
-    return InferenceClient(
-        provider="hf-inference",
-        api_key=hf_token
-    )
+    return _reranker
 
 
 def rerank_documents(query, results, top_k=5):
@@ -28,60 +24,35 @@ def rerank_documents(query, results, top_k=5):
 
     reranker = get_reranker()
 
-    documents = [
-        document
+    pairs = [
+        [query, document.page_content]
         for document, score in results
     ]
 
-    reranked = []
+    try:
 
-    for document in documents:
+        scores = reranker.predict(pairs)
 
-        text = document.page_content
+        reranked = [
+            (document, float(score))
+            for (document, _), score
+            in zip(results, scores)
+        ]
 
-        prompt = f"""
-Query: {query}
-
-Document:
-{text}
-
-Rate how relevant this document is to the query.
-Return only a relevance score from 0 to 1.
-"""
-
-        try:
-
-            response = reranker.text_classification(
-                text=prompt,
-                model=MODEL_NAME
-            )
-
-            # Get the highest returned score
-            if response:
-                score = max(
-                    float(item.score)
-                    for item in response
-                )
-            else:
-                score = 0.0
-
-        except Exception as e:
-
-            print(f"Reranker API error: {e}")
-
-            score = 0.0
-
-        reranked.append(
-            (document, score)
+        reranked.sort(
+            key=lambda item: item[1],
+            reverse=True
         )
 
-    reranked.sort(
-        key=lambda item: item[1],
-        reverse=True
-    )
+        return reranked[:top_k]
 
-    return reranked[:top_k]
+    except Exception as e:
 
+        print(f"Reranker error: {e}")
+
+        return results[:top_k]
+
+    
 
 # from sentence_transformers import CrossEncoder
 

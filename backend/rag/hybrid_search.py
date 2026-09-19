@@ -114,7 +114,8 @@ def hybrid_search(
     query,
     k=8,
     min_score=0.65,
-    classification=None
+    classification=None,
+    jurisdiction="india"
 ):
 
     start = time.time()
@@ -122,6 +123,7 @@ def hybrid_search(
     # ---------------------------------------------------------
     # Add classifier routing terms
     # ---------------------------------------------------------
+
     search_query = query
 
     if classification:
@@ -133,66 +135,181 @@ def hybrid_search(
 
         routing_terms = []
 
+        # -----------------------------------------------------
+        # Product classification
+        # -----------------------------------------------------
+
         if checks.get("product_classification"):
             routing_terms.append(
-                "Ayurveda formulation product classification"
+                "Ayurveda Ayurvedic formulation "
+                "product classification AYUSH"
             )
+
+        # -----------------------------------------------------
+        # Patent-specific routing
+        # -----------------------------------------------------
 
         if checks.get("patent"):
             routing_terms.append(
-                "patent patentability"
+                "patent patentability "
+                "Patents Act 1970 "
+                "novelty "
+                "inventive step "
+                "industrial applicability "
+                "patent application "
+                "Section 3 "
+                "Section 4"
             )
+
+        # -----------------------------------------------------
+        # Prior art routing
+        # -----------------------------------------------------
 
         if checks.get("prior_art"):
             routing_terms.append(
-                "prior art"
+                "prior art "
+                "novelty "
+                "existing formulation "
+                "known formulation "
+                "traditional knowledge"
             )
+
+        # -----------------------------------------------------
+        # TKDL / Traditional Knowledge
+        # -----------------------------------------------------
 
         if checks.get("tkdl"):
             routing_terms.append(
-                "TKDL traditional knowledge"
+                "TKDL "
+                "Traditional Knowledge Digital Library "
+                "traditional knowledge "
+                "Ayurvedic classical text "
+                "prior art"
             )
+
+        # -----------------------------------------------------
+        # ABS / Biodiversity
+        # -----------------------------------------------------
 
         if checks.get("abs"):
             routing_terms.append(
-                "biodiversity access benefit sharing ABS"
+                "biodiversity "
+                "access and benefit sharing "
+                "ABS "
+                "biological resources"
             )
+
+        # -----------------------------------------------------
+        # Regulatory
+        # -----------------------------------------------------
 
         if checks.get("regulatory"):
             routing_terms.append(
-                "Ayurvedic regulatory requirements"
+                "Ayurvedic regulatory requirements "
+                "AYUSH "
+                "Drugs and Cosmetics Act "
+                "Drugs and Cosmetics Rules "
+                "manufacturing "
+                "quality standards"
             )
+
+        # -----------------------------------------------------
+        # Trademark
+        # -----------------------------------------------------
 
         if checks.get("trademark"):
             routing_terms.append(
-                "trademark"
+                "trademark "
+                "Trade Marks Act "
+                "brand name"
             )
+
+        # -----------------------------------------------------
+        # Design
+        # -----------------------------------------------------
 
         if checks.get("design"):
             routing_terms.append(
-                "design protection"
+                "design protection "
+                "Designs Act "
+                "industrial design"
             )
+
+        # -----------------------------------------------------
+        # Trade secret
+        # -----------------------------------------------------
 
         if checks.get("trade_secret"):
             routing_terms.append(
-                "trade secret"
+                "trade secret "
+                "confidential information "
+                "confidential formula"
             )
+
+        # -----------------------------------------------------
+        # International
+        # -----------------------------------------------------
 
         if checks.get("international"):
             routing_terms.append(
-                "international WIPO PCT TRIPS"
+                "international IP "
+                "WIPO "
+                "PCT "
+                "TRIPS "
+                "Madrid"
             )
 
+        # -----------------------------------------------------
+        # Jurisdiction routing
+        # -----------------------------------------------------
+
+        jurisdiction = (
+            jurisdiction
+            .lower()
+            .strip()
+        )
+
+        if jurisdiction == "india":
+
+            routing_terms.append(
+                "India "
+                "Indian law "
+                "IP India "
+                "Indian Patents Act "
+                "AYUSH"
+            )
+
+        elif jurisdiction == "international":
+
+            routing_terms.append(
+                "international "
+                "WIPO "
+                "PCT "
+                "TRIPS "
+                "Madrid"
+            )
+
+        # -----------------------------------------------------
+        # Final search query
+        # -----------------------------------------------------
+
         if routing_terms:
+
             search_query = (
                 query
                 + " "
                 + " ".join(routing_terms)
             )
 
+    print(
+        "Search Query:",
+        search_query
+    )
+
     # ---------------------------------------------------------
     # Vector Search
     # ---------------------------------------------------------
+
     vector_results = retrieve_with_scores(
         search_query,
         k=VECTOR_K,
@@ -208,6 +325,7 @@ def hybrid_search(
     # ---------------------------------------------------------
     # BM25 Search
     # ---------------------------------------------------------
+
     keyword_start = time.time()
 
     keyword_results = keyword_search(
@@ -229,6 +347,7 @@ def hybrid_search(
     # ---------------------------------------------------------
     # Vector ranks
     # ---------------------------------------------------------
+
     vector_ranks = {}
 
     for rank, (
@@ -252,6 +371,7 @@ def hybrid_search(
     # ---------------------------------------------------------
     # Keyword ranks
     # ---------------------------------------------------------
+
     keyword_ranks = {}
 
     for rank, (
@@ -273,8 +393,9 @@ def hybrid_search(
         )
 
     # ---------------------------------------------------------
-    # Combine results using RRF
+    # Combine using RRF
     # ---------------------------------------------------------
+
     all_keys = (
         set(vector_ranks.keys())
         .union(keyword_ranks.keys())
@@ -317,6 +438,7 @@ def hybrid_search(
     # ---------------------------------------------------------
     # Sort
     # ---------------------------------------------------------
+
     final_results.sort(
         key=lambda item: item[1],
         reverse=True
@@ -325,6 +447,7 @@ def hybrid_search(
     # ---------------------------------------------------------
     # Diversify sources
     # ---------------------------------------------------------
+
     result = diversify_results(
         final_results,
         k=k,

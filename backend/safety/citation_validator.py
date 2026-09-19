@@ -7,7 +7,7 @@ def validate_citations(answer, documents):
         range(1, len(documents) + 1)
     )
 
-    pattern = r"(?:\[|【)?\s*SOURCE\s+(\d+)\s*(?:\]|\】)?"
+    pattern = r"\[\s*SOURCE\s+(\d+)\s*\]"
 
     cited_sources = re.findall(
         pattern,

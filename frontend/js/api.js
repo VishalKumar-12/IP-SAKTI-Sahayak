@@ -126,48 +126,26 @@ async function sendMessage(
         }
     );
 
-    return {
+   return {
+    success: data.success,
+    answer: data.answer || "",
+    confidence: data.confidence ?? 0,
+    confidence_level: data.confidence_level || "Low",
+    considerations: data.considerations || [],
+    why_this_matters: data.why_this_matters || "",
+    conversation_id: data.conversation_id || null,
 
-        success:
-            data.success,
+    sources: (data.citations || []).map(function (citation) {
+        return {
+            document: citation.source || "Unknown source",
+            page: citation.page ?? null,
+            section: citation.section || null,
+            url: citation.url || null
+        };
+    })
+};
 
-        answer:
-            data.answer || "",
-
-        confidence:
-            data.confidence ?? 0,
-
-        conversation_id:
-            data.conversation_id || null,
-
-        sources:
-            (data.citations || []).map(
-                function (citation) {
-
-                    return {
-
-                        document:
-                            citation.source ||
-                            "Unknown source",
-
-                        page:
-                            citation.page ??
-                            null,
-
-                        section:
-                            citation.section ||
-                            null,
-
-                        url:
-                            citation.url ||
-                            null
-                    };
-                }
-            )
-    };
 }
-
-
 /* ==========================================================================
    Chat History
    ========================================================================== */

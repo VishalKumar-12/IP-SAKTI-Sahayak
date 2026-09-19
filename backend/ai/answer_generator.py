@@ -31,7 +31,13 @@ LANGUAGE_NAMES = {
 }
 
 
-def generate_answer(query, documents, classification=None, language="en"):
+def generate_answer(
+    query,
+    documents,
+    classification=None,
+    language="en",
+    jurisdiction="india"
+):
     """
     Generate a source-grounded answer using retrieved documents.
     """
@@ -42,9 +48,10 @@ def generate_answer(query, documents, classification=None, language="en"):
             []
         )
 
-    # ---------------------------------------------------------
+    # ------------------------------------------------------------------
     # Classification / routing
-    # ---------------------------------------------------------
+    # ------------------------------------------------------------------
+
     checks = {}
 
     if classification:
@@ -71,14 +78,19 @@ def generate_answer(query, documents, classification=None, language="en"):
 
     relevant_checks_text = ", ".join(relevant_checks)
 
-    # ---------------------------------------------------------
-    # Resolve target response language
-    # ---------------------------------------------------------
-    language_name = LANGUAGE_NAMES.get(language, "English")
+    # ------------------------------------------------------------------
+    # Response language
+    # ------------------------------------------------------------------
 
-    # ---------------------------------------------------------
-    # Prepare limited context
-    # ---------------------------------------------------------
+    language_name = LANGUAGE_NAMES.get(
+        language,
+        "English"
+    )
+
+    # ------------------------------------------------------------------
+    # Prepare retrieved context
+    # ------------------------------------------------------------------
+
     context_parts = []
     citations = []
 
@@ -98,9 +110,11 @@ def generate_answer(query, documents, classification=None, language="en"):
 
         content = document.page_content.strip()
 
-        # Limit document content to reduce LLM tokens
         if len(content) > MAX_DOCUMENT_CHARS:
-            content = content[:MAX_DOCUMENT_CHARS] + "..."
+            content = (
+                content[:MAX_DOCUMENT_CHARS]
+                + "..."
+            )
 
         context_parts.append(
             f"""[SOURCE {i}]
@@ -117,73 +131,163 @@ Content:
 
     context = "\n\n".join(context_parts)
 
-    # ---------------------------------------------------------
-    # Shorter prompt
-    # ---------------------------------------------------------
+    # ------------------------------------------------------------------
+    # Prompt
+    # ------------------------------------------------------------------
+
     prompt = f"""
 You are IP-SAKTI Sahayak.
 
+You are a source-grounded AI assistant for Intellectual Property,
+Ayurveda, traditional knowledge, biodiversity and regulatory guidance.
+
 Answer the user's question using ONLY the provided sources.
+
+Jurisdiction:
+{jurisdiction}
 
 Relevant case checks:
 {relevant_checks_text}
 
-Respond entirely in {language_name}. Translate all headings, labels, and
-content into {language_name} as well — do not answer in English unless
-{language_name} is English.
+Response language:
+{language_name}
 
-IMPORTANT:
-- Routing checks are NOT legal conclusions.
-- Do not assume a new formulation is a new drug.
-- Do not assume a product is a phytopharmaceutical.
-- Do not invent laws, sections, authorities, procedures, fees,
-  clinical requirements, or eligibility conditions.
-- Every factual claim must be supported by the sources.
-- Use [SOURCE X] immediately after supported statements.
-- If information is insufficient, say:
-  "I could not find sufficient information in the available sources."
-- Do not turn a possible requirement into a confirmed requirement.
-- TKDL should be described only from the provided sources.
-- ABS applicability should be presented as something to check,
-  unless the sources establish that it applies.
+IMPORTANT SOURCE-GROUNDING RULES:
 
-For a business/product case use:
+1. Every factual legal or regulatory claim MUST be supported by the
+   provided sources.
+
+2. Use [SOURCE X] immediately after the statement supported by that
+   source.
+
+3. Do NOT invent:
+   - laws
+   - sections
+   - rules
+   - authorities
+   - procedures
+   - fees
+   - eligibility requirements
+   - patent criteria
+   - regulatory requirements
+   - filing requirements
+
+4. Do NOT use general knowledge to fill missing information.
+
+5. If the provided sources do not contain enough information to answer
+   an important part of the question, clearly say:
+
+   "I could not find sufficient information in the available sources."
+
+6. Do NOT convert a manufacturing, quality-control, pharmacopoeial or
+   regulatory requirement into a patentability requirement unless the
+   provided source explicitly makes that connection.
+
+7. If the user asks about PATENTABILITY, keep these concepts separate:
+
+   A. Patentability requirements
+   B. Prior-art / traditional-knowledge checks
+   C. Regulatory or manufacturing requirements
+
+8. If the retrieved sources discuss only manufacturing or regulatory
+   requirements but do not establish the patentability requirements,
+   explicitly state that the retrieved sources are insufficient for the
+   patentability part of the question.
+
+9. Do NOT claim that a formulation is patentable or not patentable
+   unless the provided sources support that conclusion.
+
+10. Do NOT assume that:
+    - a new formulation is a new drug
+    - a product is a phytopharmaceutical
+    - traditional knowledge automatically makes an invention
+      unpatentable
+    - ABS automatically applies
+
+11. TKDL and traditional knowledge must only be described using the
+    provided sources.
+
+12. ABS applicability must be presented as something to check unless
+    the provided sources explicitly establish applicability.
+
+13. Do not mix Indian and international law unless the question or
+    provided sources explicitly require comparison.
+
+14. Jurisdiction is:
+    {jurisdiction}
+
+15. Do not treat routing checks as legal conclusions.
+
+PATENT-SPECIFIC RULE:
+
+If the user's question is about patent requirements, patentability,
+novelty, inventive step, industrial applicability, prior art, or
+traditional knowledge:
+
+- Answer only what the retrieved patent-related sources establish.
+- Clearly distinguish patentability from regulatory compliance.
+- If patent-law evidence is missing, say so instead of using unrelated
+  Ayurveda manufacturing information as a substitute.
+- Do not present pharmacopoeial standards, manufacturing records,
+  microbial testing, or quality-control requirements as patentability
+  criteria unless the source explicitly connects them to patentability.
+
+RESPONSE STRUCTURE:
+
+For a business or product case, use:
 
 ### Case Analysis
 
+### Patentability Requirements
+
 ### Relevant Checks
 
-### What You Should Check
+### Regulatory / Compliance Considerations
 
 ### Recommended Next Steps
 
-Keep the answer concise, practical and professional.
+For a simple factual question, use a shorter structure.
 
-User question:
+LANGUAGE RULE:
+
+Respond entirely in {language_name}.
+
+Translate headings, labels and content into {language_name}.
+
+Do not answer in English unless {language_name} is English.
+
+CITATION RULE:
+
+Use citations exactly like:
+
+[ SOURCE 1 ]
+
+Do not create fake source numbers.
+
+Do not cite a source for information that is not present in that source.
+
+USER QUESTION:
+
 {query}
 
-Available sources:
+AVAILABLE SOURCES:
+
 {context}
 
-Provide the final answer.
+Now provide a concise, practical and source-grounded answer.
 """
 
-    # ---------------------------------------------------------
+    # ------------------------------------------------------------------
     # Generate answer
-    # ---------------------------------------------------------
+    # ------------------------------------------------------------------
+
     llm = get_llm()
 
     response = llm.invoke(prompt)
 
-    return response.content.strip(), citations
+    answer = response.content.strip()
 
-
-
-
-
-
-
-
+    return answer, citations
 
 
 
