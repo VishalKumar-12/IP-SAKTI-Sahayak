@@ -1,9 +1,10 @@
+import os
+import time
+
 from backend.rag.bm25_index import (
     load_bm25_index,
     tokenize
 )
-
-import time
 
 from backend.rag.retriever import retrieve_with_scores
 
@@ -17,8 +18,16 @@ KEYWORD_K = 8
 RRF_K = 60
 
 
-# Load BM25 only once
-bm25, all_documents = load_bm25_index()
+# ============================================================
+# BM25 Configuration
+# ============================================================
+
+bm25 = None
+all_documents = []
+
+ENABLE_BM25 = (
+    os.getenv("ENABLE_BM25", "true").lower() == "true"
+)
 
 
 def get_document_key(document):
@@ -118,6 +127,8 @@ def hybrid_search(
     jurisdiction="india"
 ):
 
+    global bm25, all_documents
+
     start = time.time()
 
     # ---------------------------------------------------------
@@ -135,20 +146,14 @@ def hybrid_search(
 
         routing_terms = []
 
-        # -----------------------------------------------------
         # Product classification
-        # -----------------------------------------------------
-
         if checks.get("product_classification"):
             routing_terms.append(
                 "Ayurveda Ayurvedic formulation "
                 "product classification AYUSH"
             )
 
-        # -----------------------------------------------------
-        # Patent-specific routing
-        # -----------------------------------------------------
-
+        # Patent
         if checks.get("patent"):
             routing_terms.append(
                 "patent patentability "
@@ -161,10 +166,7 @@ def hybrid_search(
                 "Section 4"
             )
 
-        # -----------------------------------------------------
-        # Prior art routing
-        # -----------------------------------------------------
-
+        # Prior art
         if checks.get("prior_art"):
             routing_terms.append(
                 "prior art "
@@ -174,10 +176,7 @@ def hybrid_search(
                 "traditional knowledge"
             )
 
-        # -----------------------------------------------------
-        # TKDL / Traditional Knowledge
-        # -----------------------------------------------------
-
+        # TKDL
         if checks.get("tkdl"):
             routing_terms.append(
                 "TKDL "
@@ -187,10 +186,7 @@ def hybrid_search(
                 "prior art"
             )
 
-        # -----------------------------------------------------
-        # ABS / Biodiversity
-        # -----------------------------------------------------
-
+        # ABS
         if checks.get("abs"):
             routing_terms.append(
                 "biodiversity "
@@ -199,10 +195,7 @@ def hybrid_search(
                 "biological resources"
             )
 
-        # -----------------------------------------------------
         # Regulatory
-        # -----------------------------------------------------
-
         if checks.get("regulatory"):
             routing_terms.append(
                 "Ayurvedic regulatory requirements "
@@ -213,10 +206,7 @@ def hybrid_search(
                 "quality standards"
             )
 
-        # -----------------------------------------------------
         # Trademark
-        # -----------------------------------------------------
-
         if checks.get("trademark"):
             routing_terms.append(
                 "trademark "
@@ -224,10 +214,7 @@ def hybrid_search(
                 "brand name"
             )
 
-        # -----------------------------------------------------
         # Design
-        # -----------------------------------------------------
-
         if checks.get("design"):
             routing_terms.append(
                 "design protection "
@@ -235,10 +222,7 @@ def hybrid_search(
                 "industrial design"
             )
 
-        # -----------------------------------------------------
         # Trade secret
-        # -----------------------------------------------------
-
         if checks.get("trade_secret"):
             routing_terms.append(
                 "trade secret "
@@ -246,10 +230,7 @@ def hybrid_search(
                 "confidential formula"
             )
 
-        # -----------------------------------------------------
         # International
-        # -----------------------------------------------------
-
         if checks.get("international"):
             routing_terms.append(
                 "international IP "
@@ -259,10 +240,7 @@ def hybrid_search(
                 "Madrid"
             )
 
-        # -----------------------------------------------------
-        # Jurisdiction routing
-        # -----------------------------------------------------
-
+        # Jurisdiction
         jurisdiction = (
             jurisdiction
             .lower()
@@ -289,10 +267,7 @@ def hybrid_search(
                 "Madrid"
             )
 
-        # -----------------------------------------------------
         # Final search query
-        # -----------------------------------------------------
-
         if routing_terms:
 
             search_query = (
@@ -326,20 +301,50 @@ def hybrid_search(
     # BM25 Search
     # ---------------------------------------------------------
 
-    keyword_start = time.time()
+    if ENABLE_BM25:
 
-    keyword_results = keyword_search(
-        search_query,
-        bm25,
-        all_documents,
-        k=KEYWORD_K
-    )
+        # Load BM25 only when first needed
+        if bm25 is None:
 
-    print(
-        "BM25 Search:",
-        round(time.time() - keyword_start, 2),
-        "sec"
-    )
+            print("Loading BM25 index...")
+
+            bm25, all_documents = (
+                load_bm25_index()
+            )
+
+            print(
+                f"BM25 loaded: {len(all_documents)} documents"
+            )
+
+        keyword_start = time.time()
+
+        keyword_results = keyword_search(
+            search_query,
+            bm25,
+            all_documents,
+            k=KEYWORD_K
+        )
+
+        print(
+            "BM25 Search:",
+            round(
+                time.time() - keyword_start,
+                2
+            ),
+            "sec"
+        )
+
+    else:
+
+        print(
+            "BM25 DISABLED - USING VECTOR SEARCH ONLY"
+        )
+
+        keyword_results = []
+
+    # ---------------------------------------------------------
+    # No results
+    # ---------------------------------------------------------
 
     if not vector_results and not keyword_results:
         return []
@@ -398,7 +403,9 @@ def hybrid_search(
 
     all_keys = (
         set(vector_ranks.keys())
-        .union(keyword_ranks.keys())
+        .union(
+            keyword_ranks.keys()
+        )
     )
 
     final_results = []
@@ -456,7 +463,10 @@ def hybrid_search(
 
     print(
         "Hybrid Search:",
-        round(time.time() - start, 2),
+        round(
+            time.time() - start,
+            2
+        ),
         "sec"
     )
 
