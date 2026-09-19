@@ -1,3 +1,4 @@
+import os
 from sentence_transformers import CrossEncoder
 
 print("RERANKER MODULE LOADED")
@@ -7,9 +8,20 @@ MODEL_NAME = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 _reranker = None
 
 
+def is_reranker_enabled():
+    """
+    Disable reranker on low-memory deployment environments.
+    Local development remains enabled by default.
+    """
+    return os.getenv("DISABLE_RERANKER", "false").lower() != "true"
+
+
 def get_reranker():
 
     global _reranker
+
+    if not is_reranker_enabled():
+        return None
 
     if _reranker is None:
         _reranker = CrossEncoder(MODEL_NAME)
@@ -23,6 +35,11 @@ def rerank_documents(query, results, top_k=5):
         return []
 
     reranker = get_reranker()
+
+    # If reranker is disabled, use hybrid-search ranking directly
+    if reranker is None:
+        print("RERANKER DISABLED - USING HYBRID SEARCH RESULTS")
+        return results[:top_k]
 
     pairs = [
         [query, document.page_content]
@@ -51,7 +68,6 @@ def rerank_documents(query, results, top_k=5):
         print(f"Reranker error: {e}")
 
         return results[:top_k]
-
     
 
 # from sentence_transformers import CrossEncoder
