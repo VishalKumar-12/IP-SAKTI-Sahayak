@@ -1,11 +1,18 @@
 from backend.rag.vector_store import get_vector_store
 
 
-# Create vector store only once
-_vector_store = get_vector_store()
+# Vector store will be created only when first needed
+_vector_store = None
 
 
 def get_retriever():
+
+    global _vector_store
+
+    if _vector_store is None:
+        print("Loading Pinecone vector store...")
+        _vector_store = get_vector_store()
+        print("Pinecone vector store loaded.")
 
     return _vector_store.as_retriever(
         search_type="similarity",
@@ -38,6 +45,13 @@ def retrieve_with_scores(
     k=8,
     min_score=0.65
 ):
+
+    global _vector_store
+
+    if _vector_store is None:
+        print("Loading Pinecone vector store...")
+        _vector_store = get_vector_store()
+        print("Pinecone vector store loaded.")
 
     results = _vector_store.similarity_search_with_score(
         query,
