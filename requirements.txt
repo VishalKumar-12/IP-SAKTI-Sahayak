@@ -15,5 +15,6 @@ pypdf==6.18.1
 pinecone==7.3.0
 rank-bm25
 huggingface_hub>=0.33.5
+sentence-transformers==5.1.0
 
 gunicorn==23.0.0
